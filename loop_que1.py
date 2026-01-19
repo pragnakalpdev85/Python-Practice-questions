@@ -28,14 +28,17 @@ def sum_of_evens(n):
 
     sum = 0
 
-    if not n < 0:
+    if type(n) == int and n > 0:
         #looping from 1 to n
         for i in range(1,n+1):
             #filtering even numbers and adding it to sum.
             if i%2 == 0:
                 sum += i
+        print(sum)
+    else:
+        print("Invalid input, Enter possitive integer.")
+                
     
-    print(sum)
 
 #test case 1:
 sum_of_evens(10)
@@ -46,5 +49,6 @@ sum_of_evens(1)
 #test case 3:
 sum_of_evens(15)
 
-#extra test case:
-sum_of_evens(-3)
+#test case 4:
+sum_of_evens(0)
+

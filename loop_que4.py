@@ -36,7 +36,7 @@
 # 1 2 3 4 5
 
 def print_pattern(n):
-    if type(n) == int:
+    if type(n) == int and n > 0:
         #looping from 1 to n
         for i in range(1,n+1):
             #looping from 1 to i
@@ -44,7 +44,7 @@ def print_pattern(n):
                 print(j,end=" ")
             print("")
     else:
-        print("Enter valid number.")
+        print("Invalid input, Enter valid possitive number.")
 
 #test case 1:
 print_pattern(3)
@@ -56,4 +56,4 @@ print_pattern(1)
 print_pattern(5)
 
 #test case 4:
-print_pattern("44")
+print_pattern(-1)
