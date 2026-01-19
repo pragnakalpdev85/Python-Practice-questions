@@ -61,3 +61,12 @@ grade_calculator(66.66)
 
 #test case 6:
 grade_calculator(-1)
+
+#test case 7:
+try:
+    a = float(input("Enter marks: "))
+    grade_calculator(a)
+except Exception as e:
+    print("Invalid datatype as input, Enter a number. ")
+
+

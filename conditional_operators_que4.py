@@ -56,9 +56,9 @@ validate_triangle(1,2,8)
 
 #test case 4:
 try:
-    a = int(input("Enter side 1: "))
-    b = int(input("Enter side 2: "))
-    c = int(input("Enter side 3: "))
+    a = float(input("Enter side 1: "))
+    b = float(input("Enter side 2: "))
+    c = float(input("Enter side 3: "))
     validate_triangle(a, b, c)
 except Exception as e:
     print("Invalid datatype as input, Enter a number. ")

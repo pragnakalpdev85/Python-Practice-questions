@@ -62,7 +62,7 @@ e_bill_calculator(75)
 
 #test case 4:
 try:
-    a = int(input("Enter units: "))
+    a = float(input("Enter units: "))
     e_bill_calculator(a)
 except Exception as e:
     print("Invalid datatype as input, Enter a number. ")
