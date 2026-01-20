@@ -29,7 +29,7 @@ def is_palindrome(num):
         ans = 0
 
         #checking number is negative or not
-        if number > 0:
+        if number >= 0:
             #looping till number becomes 0
             while number > 0:
                 r = number%10

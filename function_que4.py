@@ -26,8 +26,7 @@ def count_digit_frequency(number, digit):
     if type(number) == int:
 
         #validating number is possitive or not
-        if number >= 0:
-
+        if number > 0:
             #validate digit is between 0-9 or not
             if digit >= 0 and digit <= 9:
                 count = 0
@@ -36,10 +35,11 @@ def count_digit_frequency(number, digit):
                     number //= 10
                     if r == digit:
                         count += 1
-                
                 print(count)
             else:
                 print("Invalid input, Enter digit between 0-9.")
+        elif number == 0 and digit == 0:
+            print(1)
         else:
             print("Invalid input, Enter possitive number.")
     else:

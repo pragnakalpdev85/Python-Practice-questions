@@ -26,7 +26,7 @@ def find_gcd(num1, num2):
     if type(num1) == int and type(num2) == int:
 
         #validating entered number is negative or not
-        if num2 > 0 or num1 > 0:
+        if num2 > 0 and num1 > 0:
             #looping till remainder becomes 0
             while(num1 > 0):
                 temp = num1
