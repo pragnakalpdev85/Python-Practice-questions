@@ -61,12 +61,12 @@ find_second_largest([1,"hello"])
 #test case 7:
 try:
     input_list = []
-    print("Write stop to End input.")
-    while True:
-        list_elements = input("Enter Element :")
-        if list_elements == "stop":
-            break
-        input_list.append(int(list_elements))
+    list_size = int(input("Enter the size of the list: "))
+    i = 0
+    while i < list_size:
+        element = float(input(f"Enter element {i+1}: "))
+        input_list += [element,]
+        i += 1
 
     find_second_largest(input_list)
 except Exception:

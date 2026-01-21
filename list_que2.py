@@ -53,12 +53,12 @@ remove_duplicates([5, 4, 3, 2, 1])
 #test case 4:
 try:
     input_list = []
-    print("Write stop to End input.")
-    while True:
-        list_elements = input("Enter Element :")
-        if list_elements == "stop":
-            break
-        input_list.append(int(list_elements))
+    list_size = int(input("Enter the size of the list: "))
+    i = 0
+    while i < list_size:
+        element = input(f"Enter element {i+1}: ")
+        input_list += [element,]
+        i += 1
 
     remove_duplicates(input_list)
 except Exception:
