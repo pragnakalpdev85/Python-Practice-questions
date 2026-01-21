@@ -50,6 +50,7 @@ def merge_sorted_list(list1, list2):
                 #both are same
                 elif list1[i] == list2[j]:
                     ans_list += [list1[i],]
+                    ans_list += [list1[i],]
                     i += 1
                     j += 1
                         

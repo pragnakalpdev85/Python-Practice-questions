@@ -29,26 +29,28 @@ def rotate_list(input_list, k):
         for i in input_list:
             size_list += 1
 
-        if k >= size_list:
-            k %= size_list
+        if size_list != 0:
+            if k >= size_list:
+                k %= size_list
 
-        print(k)
-        
-        output_list = []
-        n = size_list
-        size_list -= k
-        print(n,size_list)
-        #rotating list k times
-        while size_list < n:
-            output_list += [input_list[size_list], ]
-            size_list += 1
-        
-        j = 0
-        while j < n-k:
-            output_list += [input_list[j], ]
-            j += 1
+            
+            output_list = []
+            n = size_list
+            size_list -= k
 
-        print(output_list)
+            #rotating list k times
+            while size_list < n:
+                output_list += [input_list[size_list], ]
+                size_list += 1
+            
+            j = 0
+            while j < n-k:
+                output_list += [input_list[j], ]
+                j += 1
+
+            print(output_list)
+        else:
+            print("Empty list, please enter atleast one value.")
 
 
     except TypeError as e:
@@ -61,11 +63,12 @@ rotate_list([1, 2, 3, 4, 5],2)
 rotate_list([10, 20, 30],1)
 
 #test case 3:
-rotate_list([1, 2, 3, 4],6)
+rotate_list([1,2,3,4],6)
 
 #test case 4:
 try:
     input_list = []
+    print("Provide a list with atleast one value.")
     list_size = int(input("Enter the size of the list: "))
     i = 0
     while i < list_size:
