@@ -37,32 +37,31 @@ def count_lines_words_characters(file_name):
         for i in file_data:
             data_size += 1
 
+        j = 0
         word = ''
-        line = ''
-        i = 0
-        while i < data_size:
+        #looping through file data
+        for i in file_data:
 
-            #there is space and the word is not empty than increment word count
-            if file_data[i] == ' ':
-                if word != '' and word != ' ':
-                    word_count += 1
-                elif i == data_size-1:
-                    line_count += 1
-                word = ''
-
-            #if there is new line character or final character or string increment line count
-            elif file_data[i] == '\n' or i == data_size-1:
-                if line != '' and word != '' and line != " " and word != " ":
+            #character is new line or last character increment line count
+            if j == data_size-1 or i == '\n':
+                if word != '':
                     word_count += 1
                     line_count += 1
                     word = ''
-                    line = ''
+                else:
+                    line_count += 1
+
+            #character is space and word is there then increment word count
+            elif i == " ":
+                if word != '':
+                    word_count += 1
+                    word = ''
+            else:
+                word += i
 
             character_count += 1
-            word += file_data[i]
-            line += file_data[i]
-
-            i += 1
+            j += 1
+    
 
         return f"Lines: {line_count}, Words: {word_count}, Characters: {character_count}"
 
@@ -73,7 +72,7 @@ def count_lines_words_characters(file_name):
     except TypeError as e:
         print("Invalid input, ",e)
 
-#test case 1:
+# test case 1:
 try:
     input_file_name = input("Enter file name: ")
     ans = count_lines_words_characters(input_file_name)

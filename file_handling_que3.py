@@ -36,31 +36,46 @@ def find_and_replace(file_name, output_file_name, find, replace):
         for i in file_data:
             data_size += 1
 
-        i = 0
-        while i < data_size:
-            #if there is space or new line character or the last character of the string 
-            if file_data[i] == " " or file_data[i] == '\n' or i == data_size-1:
-                
-                #last word than add thw character to the word first
-                if i == data_size-1:
-                    word += file_data[i]
-                
-                #word is not empty and word is not space and word is equal to find
-                if word != '' and word != ' ' and word == find:
-                    ans_data += replace
-                else:
-                    ans_data += word + " "
+        j = 0
+        for i in file_data:
+           
+           #character is space
+           if i == " ":
+               #word is find than replace
+               if word != "":
+                   if word == find:
+                       ans_data += replace + " "
+                       word = ""
+                   else:
+                       ans_data += word + " "
+                       word = ""
+               else:
+                   ans_data += " "
+           #character is new line character
+           elif i == "\n":
+               #word is find than replace
+               if word != "":
+                   if word == find:
+                       ans_data += replace + "\n"
+                       word = ""
+                   else:
+                       ans_data += word + "\n"
+                       word = ""
+               else:
+                   ans_data += "\n"
+           #last character of the string
+           elif j == data_size-1:
+               #word is find than replace
+               word += i
+               if word == find:
+                   ans_data += replace
+               else:
+                   ans_data += word
+           else:
+               word += i
 
-                #adding space if there is space or
-                if file_data[i] == " ":
-                    ans_data += " "
-                elif file_data[i] == "\n":
-                    ans_data += "\n"
-                
-                word = ''
-            else:
-                word += file_data[i]
-            i += 1
+           j += 1
+
 
 
         output_file = open(output_file_name,"w")

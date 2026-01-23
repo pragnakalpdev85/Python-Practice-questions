@@ -63,6 +63,3 @@ def merge_files(*file_names,result_file):
         print("Given File name is not defined, ",e)
     except TypeError as e:
         print("Invalid input, ",e)
-
-ans = merge_files("file_handling_que4_testcase1.txt", "file_handling_que4_testcase2.txt", result_file="hello.txt")
-print(ans)
