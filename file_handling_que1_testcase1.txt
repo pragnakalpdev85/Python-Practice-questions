@@ -1,3 +1,2 @@
 Hello world
-Python       
-             Programming  
+Python Programming  

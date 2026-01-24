@@ -1,3 +1,1 @@
-Python is 
-
-        great   
+Python is great
