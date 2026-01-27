@@ -1,0 +1,9 @@
+Total words: 15
+Unique words: 5
+Word Frequency:
+hello: 3
+world: 3
+python: 1
+hiii: 7
+hiiii: 1
+Top 3 words: hiii(7), hello(3), hello(3)
