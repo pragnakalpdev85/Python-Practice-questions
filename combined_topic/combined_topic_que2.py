@@ -71,12 +71,12 @@ def count_words_frequency(data: str) -> dict:
         character = data[index]
         #converting uppercase to lower case
         if data[index] >= "A" and data[index] <= "Z":
-            index = 0
+            index2 = 0
             for j in upper_alpha:
                 if(data[index] == j):
                     break
-                index += 1
-            character = lower_alpha[index]
+                index2 += 1
+            character = lower_alpha[index2]
                     
         #if the character is space or last character or newline character
         if data[index] == ' ' or index == data_size-1 or data[index] == '\n':
@@ -143,10 +143,23 @@ def sort_word_freq(words_freq: dict) -> set:
     return list_keys
 
 def word_analysis_tool(input_file_name: str, output_file_name: str) -> str:
+    '''
+    counts total words, unique words, word frequency of each word and top 3 words with highest frequency
+
+    Args:
+        input_file_name (str): input file name
+        output_file_name (str): output file name
+
+    Returns:
+        (str): words analysis data
+    '''
     try:
         file_data = ''
         with open(input_file_name, 'r') as file:
             file_data = file.read()
+
+        if file_data == '':
+            return "Empty file"
 
         Total_words = 0
         unique_words = 0
@@ -164,7 +177,20 @@ def word_analysis_tool(input_file_name: str, output_file_name: str) -> str:
         
         #sorting index and adding top 3 to the output data
         key_list = sort_word_freq(ans_dict)
-        output_data += f"Top 3 words: {key_list[0]}({ans_dict[key_list[0]]}), {key_list[1]}({ans_dict[key_list[1]]}), {key_list[1]}({ans_dict[key_list[1]]})"
+        output_data += f"Top 3 words: "
+
+        list_size = 0
+        for key in key_list:
+            list_size += 1
+
+        index = 0
+        for key in key_list:
+            if index == 2 or index == list_size-1:
+                output_data += f"{key}({ans_dict[key]})"
+                break
+            else:
+                output_data += f"{key}({ans_dict[key]}), "
+            index += 1
 
         with open(output_file_name,'w') as file:
             file.write(output_data)

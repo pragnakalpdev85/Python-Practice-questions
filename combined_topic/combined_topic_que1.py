@@ -179,7 +179,7 @@ def main():
         input_file_name = input("Enter input file name: ")
         output_file_name = input("Enter output file name: ")
 
-        ans = grade_management_system(input_file_name="student_data.txt", output_file_name="result.txt")
+        ans = grade_management_system(input_file_name, output_file_name)
         print(ans)
     except TypeError as e:
         print("Invalid input, ",e)
