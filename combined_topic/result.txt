@@ -1,5 +1,0 @@
-Mean:  1.80
-Median:  2.00
-Mode: 1.0, 2.0
-Range: 2.0
-Standard Deviation:  0.75
