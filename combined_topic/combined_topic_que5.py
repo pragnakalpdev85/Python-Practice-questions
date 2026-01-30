@@ -237,8 +237,9 @@ def data_statistic_calculator(input_file_name: str, output_file_name: str) -> st
                     word += char
 
                 if (char == '\n' or index == data_size-1) and word != '':
-                    number_list += [float(word),]
-                    word = ''
+                    if word != "\n" and word != " ":
+                        number_list += [float(word),]
+                        word = ''
             else:
                 word += char
             index += 1
