@@ -1,6 +1,0 @@
-Alice,98 | Bob,95
-het3,90 
-a
-
-
-het,98 | het2,95
