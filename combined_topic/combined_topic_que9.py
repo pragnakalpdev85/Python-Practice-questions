@@ -24,7 +24,33 @@
 # Low Stock Products:
 # 101,Laptop,5,50000
 # Total Inventory Value: 250000
+def input_num(name: str) -> float:
+    '''
+    takes input from user
 
+    Args:
+        name (str): name of the field
+    Returns:
+        float: field value
+    '''
+    flag = True
+    while flag == True:
+        try:
+            ans = input(f"Enter {name} of the product: ")
+            if name == "id" and float(ans) > 0:
+                return int(ans)
+            elif name != 'id' and float(ans) >= 0:
+                if name == "quantity":
+                    return int(ans)
+                else:
+                    return float(ans)
+            else:
+                print(f"Invalid input, {name} should be positive.")
+        except TypeError as e:
+            print("Invalid data type, Enter number again.")
+        except ValueError as e:
+            print("Invalid data type, Enter number again.")
+        
 def string_to_lower_case(data: str) -> str:
     '''
     converts string into lowercase
@@ -74,7 +100,7 @@ def read_file(file_name: str) -> dict:
     Args:
         file_name (str): name of the input file
     Returns:
-        list: list of tuples with name and marks
+        dict: dict of product details
     '''
     data_dict = {}
 
@@ -330,16 +356,16 @@ def main():
 
         match operation_num:
             case 1:
-                id = int(input("Enter Product id: "))
+                id = input_num("id")
                 name = input("Enter Product name: ")
-                quantity = int(input("Enter Product quantity: "))
-                price = float(input("Enter Product price: "))
+                quantity = input_num("quantity")
+                price = input_num("price")
 
                 ans =  add_product(input_file_name,id,name,quantity,price)
                 print(ans)
             case 2:
-                id = int(input("Enter product Id: "))
-                quantity = int(input("Enter enter quantity: "))
+                id = input_num("id")
+                quantity = input_num("quantity")
                 ans  = update_quantity(input_file_name, id, quantity)
                 print(ans)
             case 3:
@@ -347,7 +373,7 @@ def main():
                 ans = search_by_name(input_file_name, name)
                 print(ans)
             case 4:
-                id = int(input("Enter Id of the product: "))
+                id = input_num('id')
                 ans =  search_by_id(input_file_name,id)
                 print(ans)
             case 5:
@@ -365,7 +391,7 @@ def main():
     except TypeError as e:
         print("Invalid input data. Please enter valid data types in input.")
     except ValueError as e:
-        print("Invalid content structure in input, Please enter valid data in input.")
+        print("Invalid content input, Please enter valid data in input.")
 
 if __name__ == "__main__":
     main()
