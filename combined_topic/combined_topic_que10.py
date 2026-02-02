@@ -95,7 +95,7 @@ def read_file(file_name: str) -> dict:
     with open(file_name, 'r') as file:
         list_words = []
         for lines in file:
-            line = string_to_lower_case(lines)
+            line = lines
             data_size = 0
 
             #calculating length of the line

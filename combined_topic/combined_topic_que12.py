@@ -231,7 +231,7 @@ def break_long_lines(file_data: str) -> str:
     #looping through file data
     for char in file_data:
         #break line if there is sentence termination punctuation or space and character count is over 80
-        if char ==  ' ' and char_count > 80:
+        if (char ==  ' ' or char == '.') and char_count > 80:
             ans_str += '\n'
             char_count = 0
         else:
@@ -285,10 +285,13 @@ def formate_beautify_text(input_file_name: str, output_file_name: str) -> str:
                     ans_data = ''
                     ans_data = remove_extra_spaces(lines)
                     ans_data = capitalize_first_letter(ans_data)
-                    ans_data = break_long_lines(ans_data)
                     ans_data = format_punctuation_spacing(ans_data)
+                    ans_data = break_long_lines(ans_data)
                     data += preserve_paragraph + ans_data
                     
+        if data == "":
+            return "There is no content in file"
+        
         data_size = 0
         for char in data:
             data_size += 1
@@ -325,7 +328,7 @@ def main():
 
         flag = False
         while flag == False:
-            output_file_name = input("Enter input file name: ")
+            output_file_name = input("Enter output file name: ")
             flag = validate_filename_input(output_file_name)
 
         ans = formate_beautify_text(input_file_name, output_file_name)

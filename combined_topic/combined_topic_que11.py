@@ -50,6 +50,77 @@
 # Total: 601.8
 import os
 
+def read_line(line: str) -> list:
+    '''
+    reads each word of line
+
+    Args:
+        line (str): line of text
+    Returns:
+        list: returns list of words
+    '''
+
+    data_size = 0
+    #calculating length of the line
+    for char in line:
+        data_size += 1
+
+    index = 0
+    word = ''
+    list_words = []
+    count_words = 0
+    for chars in line:
+        #add all words in the list
+        if chars == ',' or chars == '\n' or index == data_size-1:
+            if index == data_size-1 and chars != " " and chars != "\n":
+                word += chars
+        
+            if word != '':
+                list_words += [word,]
+                count_words += 1
+                word = ''
+        else:
+            if chars != " ":
+                word += chars
+        index += 1
+
+    #check the line has 4 word if not than data is incomplete
+    if count_words != 4 and count_words != 0:
+        print(f"Invalid in input of product '{list_words[0]}' in file, Please enter valid data in input file.")
+        return []
+    
+    # for words in list_words:
+    if count_words == 0:
+        return []
+    
+    return list_words
+
+def validate_product_details(list_details: list) -> dict:
+    '''
+    validates product quantity price and discount
+
+    Args:
+        list_details (list): list of product name,quantity,price and discount
+    Returns:
+        dict: dictionary of product details
+    '''
+    try:
+        product = {}
+
+        if int(list_details[1]) < 0:
+            print(f"Invalid quantity of product '{list_details[0]}' in file, quantity should be positive")
+        elif float(list_details[2]) < 0:
+            print(f"Invalid price of product '{list_details[0]}' in file, price should be positive")
+        elif float(list_details[3]) < 0 or float(list_details[3]) > 100:
+            print(f"Invalid discount of product '{list_details[0]}' in file, discount should be positive and between 0 to 100")
+        else:
+            product = {'name': list_details[0],'quantity': int(list_details[1]),"price": float(list_details[2]),'discount': float(list_details[3])}
+    except ValueError as e:
+        print("hii")
+        print(f"Invalid in input of product '{list_details[0]}' in file, Please enter valid data in input file.")
+        
+    return product
+
 def validate_filename_input(file_name: str) -> bool:
     '''
     validates file name input
@@ -80,70 +151,31 @@ def validate_filename_input(file_name: str) -> bool:
     
     return True
     
-def read_file(file_name: str) -> dict:
+def convert_data_to_dict(data: list) -> dict:
     '''
     read data and creat list of data
     
     Args:
-        file_name (str): name of the input file
+        data (list): data from text file
     Returns:
         dict: dictionary of shopping cart products
     '''
     data_dict = {}
 
-    #reading file data line by line
-    with open(file_name, 'r') as file:
+    index_count = 0
+    for line in data:
 
-        for line in file:
-            data_size = 0
-            #calculating length of the line
-            for char in line:
-                data_size += 1
+        list_words = read_line(line)
+        if list_words == []:
+            continue
+        #validating the product price, quantity and discount
+        #and adding the product to data dictionary
+        temp_dict = validate_product_details(list_words)
+        if temp_dict != {}:
+            data_dict[index_count] = temp_dict
+            index_count += 1 
 
-            index = 0
-            word = ''
-            list_words = []
-            count_words = 0
-            index_count = 0
-            for chars in line:
-                #add all words in the list
-                if chars == ',' or chars == '\n' or index == data_size-1:
-                    if index == data_size-1 and chars != " " and chars != "\n":
-                        word += chars
-                
-                    if word != '':
-                        list_words += [word,]
-                        count_words += 1
-                        word = ''
-                else:
-                    if chars != " ":
-                        word += chars
-                index += 1
-
-            #check the line has 4 word if not than data is incomplete
-            if count_words != 4 and count_words != 0:
-                raise ValueError()
-            
-            # for words in list_words:
-            if count_words == 0:
-                continue
-
-            #validating the product price, quantity and discount
-            #and adding the product to data dictionary
-            try:
-                if int(list_words[1]) < 0:
-                    print(f"Invalid quantity of product '{list_words[0]}' in file, quantity should be positive")
-                elif float(list_words[2]) < 0:
-                    print(f"Invalid price of product '{list_words[0]}' in file, price should be positive")
-                elif float(list_words[3]) < 0:
-                    print(f"Invalid discount of product '{list_words[0]}' in file, discount should be positive")
-                else:
-                    data_dict[index_count] = {'name': list_words[0],'quantity': int(list_words[1]),"price": float(list_words[2]),'discount': float(list_words[3])}
-                    index_count += 1
-            except ValueError as e:
-                print(f"Invalid in input of product '{list_words[0]}' in file, Please enter valid data in input file.")
-                
-        return data_dict
+    return data_dict
 
 def generate_bill(input_file_name: str, output_file_name: str) -> str:
     '''
@@ -156,9 +188,15 @@ def generate_bill(input_file_name: str, output_file_name: str) -> str:
         str: generated bill of shopping cart
     '''
     try:
-        data_dict = read_file(input_file_name)
+        #reading file data line by line
+        with open(input_file_name, 'r') as file:
+            data = file.readlines()
+            if data == []:
+                return "There is no content in file"
+            
+        data_dict = convert_data_to_dict(data)
         if data_dict == {}:
-            return "There is no content in file"
+            return 
         
         output = ''
         grand_total = 0
@@ -166,6 +204,7 @@ def generate_bill(input_file_name: str, output_file_name: str) -> str:
         #calculating total bill with taxes
         for product in data_dict:
             temp_dict = data_dict[product]
+
             price = temp_dict['quantity']*temp_dict['price']
             output += f"Item: {temp_dict['name']}\nQuantity: {temp_dict['quantity']}\nPrice: {price}\n"
 
@@ -181,8 +220,8 @@ def generate_bill(input_file_name: str, output_file_name: str) -> str:
             count_products += 1
         
         #adding total bill and final total with taxes in output
-        if count_products != 1:
-            output += f"Grand Total: {grand_total}\n"
+        
+        output += f"Grand Total: {grand_total}\n" if count_products != 1 else ""
         output += f"Tax (18%): {grand_total*(0.18)}\n"
         output += f"Final Total: {grand_total + grand_total*(0.18)}"
 
