@@ -427,6 +427,7 @@ def main():
                 if active_member == None:
                     print("No Member has started a workout yet.")
                     continue
+                
                 name = InputValidate.input_str("Exercise name")
                 sets = InputValidate.input_sets_reps("Sets")
                 reps = InputValidate.input_sets_reps("Reps per set")
@@ -439,9 +440,9 @@ def main():
                 
             case 4:
                 id = InputValidate.input_str("Member Id")
-                active_member = Member.search_member(id)
-                if active_member != None:
-                    res = active_member.view_workout_summary()
+                search = Member.search_member(id)
+                if search != None:
+                    res = search.view_workout_summary()
                     print(res)
                 else:
                     print(f"There is no Member with Id {id}")

@@ -189,6 +189,20 @@ class MovieHall:
         
         return message
     
+    def seats_available(self) -> int:
+        '''
+        calculates how many seats are available
+        
+        Returns:
+            int: number of seats available
+        '''
+        count = 0
+        for seat in self.__list_seat:
+            if seat == 'X':
+                count += 1
+                
+        return 50-count
+    
     @staticmethod
     def input_choice() -> int:
         '''
@@ -207,7 +221,7 @@ class MovieHall:
                 print("Invalid choice, Enter your choice (1-3) Again")    
         
     @staticmethod
-    def input_and_validate_seat_id(num) -> str:
+    def input_and_validate_seat_id(num, list_seats) -> str:
         '''
         takes input and validate seat id
         
@@ -223,6 +237,11 @@ class MovieHall:
                 numbers = list('123456789') + ['10']
                 if len(id) > 3 or id[0].lower() not in rows or id[1:] not in numbers:
                     raise ValueError("Invalid Seat id, Enter again")
+                
+                if id in list_seats:
+                    print("Id is already entered. please Enter different seat id.")
+                    continue
+                
                 return id.upper()
             
             except ValueError as e:
@@ -239,6 +258,7 @@ class MovieHall:
             except ValueError as e:
                 print("Invalid Input of number of tickets, Enter again")
 
+
 def main():
     moviehall = MovieHall()
 
@@ -254,9 +274,14 @@ def main():
                 print(tickets)
             case 2:
                 num = MovieHall.input_number_of_ticket()
+                seats = moviehall.seats_available()
+                if seats < num:
+                    print(f"There are only {seats} seats available.")
+                    continue
+                    
                 list_seats = []
                 for nums in range(num):
-                    id = MovieHall.input_and_validate_seat_id(nums+1)
+                    id = MovieHall.input_and_validate_seat_id(nums+1, list_seats)
                     list_seats.append(id)
                 message = moviehall.book_tickets(list_seats)
                 print(message)

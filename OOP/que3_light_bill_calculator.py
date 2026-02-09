@@ -443,10 +443,14 @@ def main():
         match choice:
             case 1:
                 id = input("Enter Customer ID: ")
-                name = input("Enter Customer Name: ")
-                age = Customer.age_input_validation()
-                c = Customer(id, name, age)
-                print(f"Customer '{name}' (ID: {id}) added successfully.")
+                if Customer.search_customer(id) == None:
+                    name = input("Enter Customer Name: ")
+                    age = Customer.age_input_validation()
+                    c = Customer(id, name, age)
+                    print(f"Customer '{name}' (ID: {id}) added successfully.")
+                else:
+                    print(f"Customer with id {id} already exists please enter new id.")
+                    
             case 2:
                 id = input("Enter Customer ID: ")
                 unit = Customer.unit_input_validation()
