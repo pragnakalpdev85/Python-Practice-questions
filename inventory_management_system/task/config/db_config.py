@@ -1,7 +1,7 @@
 import psycopg2  # type: ignore
 from psycopg2 import sql # type: ignore
 
-from .env_variables import database_host,database_name,database_password,database_port,database_user
+from .env_variables import DB_NAME, DB_HOST, DB_PASSWORD, DB_PORT, DB_USER
 
 def create_if_not_exists():
     ''' 
@@ -10,10 +10,10 @@ def create_if_not_exists():
     
     #Astablish connection with preexisting deafult database postgress
     connect = psycopg2.connect(database = 'postgres',
-                            user =  database_user,
-                            password =  database_password,
-                            host =  database_host,
-                            port =  database_port)
+                            user =  DB_USER,
+                            password =  DB_PASSWORD,
+                            host =  DB_HOST,
+                            port =  DB_PORT)
     
     # needed for database creation and deletion operations
     connect.autocommit = True
@@ -21,15 +21,13 @@ def create_if_not_exists():
     #creating cursor for exicuting query
     cur = connect.cursor()
     
-    db_name = database_name
-    
     #checks database exists of not
-    cur.execute(f"SELECT 1 FROM pg_database WHERE datname = '{db_name}';")
+    cur.execute(f"SELECT 1 FROM pg_database WHERE datname = '{DB_NAME}';")
     exists = cur.fetchone()
     
     #if database does not exist than creating one
     if not exists:
-        query = f"CREATE DATABASE {db_name};"
+        query = f"CREATE DATABASE {DB_NAME};"
         cur.execute(query)
         print('database is created')
     else:
@@ -45,11 +43,11 @@ def connect_database():
     '''
     
     #Astablish connection with database
-    connection = psycopg2.connect(database = database_name,
-                            user =  database_user,
-                            password =  database_password,
-                            host =  database_host,
-                            port =  database_port)
+    connection = psycopg2.connect(database = DB_NAME,
+                            user =  DB_USER,
+                            password =  DB_PASSWORD,
+                            host =  DB_HOST,
+                            port =  DB_PORT)
     print("connection in successful")
     
     connection.autocommit = True
