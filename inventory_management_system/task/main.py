@@ -1,5 +1,6 @@
 import logging
 import re
+from typing import Optional, Union
 
 from config.db_config import create_if_not_exists, connect_database
 from config.create_schema import create_schema
@@ -14,113 +15,120 @@ logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
 
-def choice() -> int:
+def validate(func) -> Optional[Union[int, float, str]]:
+    
+    index = 0
+    while index < 3:
+        value = func()
+        
+        if value != None:
+            return value
+        index += 1
+        
+    return None
+
+def choice() -> Union[int,str]:
     '''
     Takes user input choice of the user
     
     Returns:
         Int: Number of operation
-    '''
-    while True:
-        try:
-            choice = int(input("Enter your choice (1 to 10): "))
+    ''' 
+    user_choice = input("Enter your choice (1 to 10): ")
+    if user_choice.isdigit() and int(user_choice) < 11 and int(user_choice) > 0:
+        return int(user_choice)
+    else:
+        print("Invalid choice, Enter choice between 1 to 10.")
+        return None  
             
-            if choice > 10 or choice < 1:
-                raise Exception()
-            
-            return choice
-        
-        except:
-            print("Invalid Choice enter your choice between 1 to 10.")
-            
-def quantity_input_validation() -> int:
+def quantity_input_validation() -> Optional[int]:
     '''
     Validated quantity input
     
     Returns:
         int: returns quantity
-    ''' 
-    while True:
-        try:
-            quantity = int(input("Enter quantity: "))
-            
-            if quantity < 1:
-                raise Exception()
-            
-            return quantity
-        
-        except:
-            print("Invalid Quantity, Quantity Should be greater than 0.")
+    '''     
+    quantity = input("Enter quantity: ")
+    if quantity.isdigit() and quantity > '0':
+        return int(quantity)
+    else:
+        print("Invalid Quantity, Quantity Should be greater than 0.")
+        return None
 
-def price_input_validation() -> float:
+def price_input_validation() -> Optional[float]:
     '''
     Validated price input
     
     Returns:
         float: returns price
-    ''' 
-    while True:
-        try:
-            price = int(input("Enter price: "))
+    '''     
+    price = input("Enter price: ")
+    if price.isdigit() and price > '0':
+        return float(price)
+    else:
+        print("Invalid price, price Should be greater than 0.")
+        return None
             
-            if price < 1:
-                raise Exception()
-            
-            return price
-        
-        except:
-            print("Invalid price, price Should be greater than 0.")
-            
-def stock_input_validation() -> int:
+def stock_input_validation() -> Optional[int]:
     '''
     Validated stock input
     
     Returns:
         int: returns stock
     ''' 
-    while True:
-        try:
-            quantity = int(input("Enter stock: "))
-            
-            if quantity < 0:
-                raise Exception()
-            
-            return quantity
-        
-        except:
-            print("Invalid stock, stock Should be greater or equal to 0.")
- 
-def name_input_validation(title) -> str:
+    
+    stock = input("Enter stock: ")
+    if stock.isdigit() and stock >= '0':
+        return int(stock)
+    else:
+        print("Invalid stock, stock Should be greater or equal to 0.")
+        return None
+
+def product_name_input_validation() -> Optional[str]:
     '''
     validated input name
     
     Returns:
         name: name of product or supplier
     '''
-    while True:
-        name = input(f"Enter {title} Name: ")
-        name = name.strip()
-        
-        if name == '':
-            print("Invalid name Enter Again.")
-            continue
-        
+    name = input(f"Enter product Name: ")
+    name = name.strip()
+    
+    if name == '':
+        print("Invalid name Enter Again.")
+        return None
+    else:
+        return name
+ 
+def supplier_name_input_validation() -> Optional[str]:
+    '''
+    validated input name
+    
+    Returns:
+        name: name of Supplier or supplier
+    '''
+    name = input(f"Enter Supplier Name: ")
+    name = name.strip()
+    
+    if name == '':
+        print("Invalid name Enter Again.")
+        return None
+    else:
         return name
 
-def validate_email() -> str:
+def validate_email() -> Optional[str]:
     '''
     validated email input
     
     Returns:
         str: varified email
     '''
-    while True:
-        email = input("Enter email of supplier: ")
-        check = re.fullmatch(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email)
-        if email == '' or check == None:
-            print("Invalid email, Enter email again.")
-            continue
-        
+    email = input("Enter email of supplier: ")
+    check = re.fullmatch(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email)
+    if email == '' or check == None:
+        print("Invalid email, Enter email again.")
+        return None
+    else:
         return email
 
 def main():
@@ -143,56 +151,106 @@ def main():
             print('8. Purchase Summary.')
             print('9. Clean Up Old Orders.')
             print('10. Exit.')
-            operation = choice()
+            operation = validate(choice)
             
             try:
                 match operation:
                     case 1:
                         print('==============================================')
-                        name = name_input_validation('product')
-                        price = price_input_validation()
-                        stock = stock_input_validation()
+                        name = validate(product_name_input_validation)
+                        if name == None:            
+                            print("You have entered invalid product name Three times.\nOperation will be closed.")
+                            continue
+                        
+                        price = validate(price_input_validation)
+                        if price == None:            
+                            print("You have entered invalid price Three times.\nOperation will be closed. ")
+                            continue
+                        
+                        stock = validate(stock_input_validation)
+                        if stock == None:            
+                            print("You have entered invalid stock Three times.\nOperation will be closed.")
+                            continue
                         
                         ans = add_product(cursor, name, price, stock)
                         print(ans)
                         
                     case 2:
                         print('==============================================')
-                        name = name_input_validation('product')
-                        price = price_input_validation()
+                        name = validate(product_name_input_validation)
+                        if name == None:            
+                            print("You have entered invalid product name Three times.\nOperation will be closed. ")
+                            continue
+                        
+                        price = validate(price_input_validation)
+                        if price == None:            
+                            print("You have entered invalid price Three times.\nOperation will be closed . ")
+                            continue
                         
                         ans = update_product(cursor, name, price, stock = None)
                         print(ans)
                         
                     case 3:
                         print('==============================================')
-                        name = name_input_validation('product')
-                        stock = stock_input_validation()
+                        name = validate(product_name_input_validation)
+                        if name == None:            
+                            print("You have entered invalid product name Three times.\nOperation will be closed. ")
+                            continue
+                        
+                        stock = validate(stock_input_validation)
+                        if stock == None:            
+                            print("You have entered invalid stock Three times.\nOperation will be closed. ")
+                            continue
                         
                         ans = update_product(cursor, name, None, stock)
                         print(ans)
                         
                     case 4:
                         print('==============================================')
-                        name = name_input_validation('Supplier')
-                        email = validate_email()
+                        name = validate(supplier_name_input_validation)
+                        if name == None:            
+                            print("You have entered invalid supplier name Three times.\nOperation will be closed.")
+                            continue
+                        
+                        email = validate(validate_email)
+                        if email == None:            
+                            print("You have entered invalid email Three times.\nOperation will be closed. ")
+                            continue
                         
                         ans = add_supplier(cursor, name, email)
                         print(ans)
                         
                     case 5:
                         print('==============================================')
-                        product_name = name_input_validation('product')
-                        supplier_name = name_input_validation('supplier')
-                        quantity = quantity_input_validation()
+                        product_name = validate(product_name_input_validation)
+                        if product_name == None:            
+                            print("You have entered invalid product name Three times.\nOperation will be closed.")
+                            continue
+                        
+                        supplier_name = validate(supplier_name_input_validation)
+                        if supplier_name == None:            
+                            print("You have entered invalid supplier name Three times.\nOperation will be closed. ")
+                            continue
+                        
+                        quantity = validate(quantity_input_validation)
+                        if quantity == None:            
+                            print("You have entered invalid quantity Three times.\nOperation will be closed. ")
+                            continue
                         
                         ans = purchase_products(cursor, product_name, supplier_name, quantity)
                         print(ans)
                         
                     case 6:
                         print('==============================================')
-                        name = name_input_validation('product')
-                        quantity = quantity_input_validation()
+                        name = validate(product_name_input_validation)
+                        if name == None:            
+                            print("You have entered invalid product name Three times.\nOperation will be closed. ")
+                            continue
+                        
+                        quantity = validate(quantity_input_validation)
+                        if quantity == None:            
+                            print("You have entered invalid quantity Three times.\nOperation will be closed. ")
+                            continue
                         
                         ans = create_order(cursor, name, quantity)
                         print(ans)
@@ -215,15 +273,18 @@ def main():
                         print('==============================================')
                         break
                     
+                    case _:
+                        if operation == None:
+                            print('You have entered wrong choices Three times.')
+                        break
+                    
             except Exception as err:
                 logging.exception(err)
-                    
         connection.close()
         
     except Exception as err:
         print("Database Connection Error")
         logging.exception(err)
-   
     
 if __name__ == '__main__':
     main()
